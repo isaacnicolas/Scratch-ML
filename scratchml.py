@@ -179,8 +179,8 @@ class LinearRegressionSML():
 
     return mse
   
-  class LogisticRegressionSML():
-
+class LogisticRegressionSML():
+    
     """
     Logistic Regression.
 
@@ -196,11 +196,10 @@ class LinearRegressionSML():
 
         """
         self.coefficients = None
-        self.intercept = None
         self.learning_rate = learning_rate
         self.num_iterations = num_iterations
-        self.lambda_val = lambda_val
-        self.regularization = False
+        #self.lambda_val = lambda_val
+        #self.regularization = False
         self.verbose = verbose
     
     def fit(self,X,y,method='gradientdesc'):
@@ -231,14 +230,13 @@ class LinearRegressionSML():
           self.fit_gd(X,y)
         elif method == "sgd":
           self.fit_sgd(X,y)
+        else:
+          raise ValueError("Invalid fitting method. Please choose 'gd' or 'sgd'.")
     
-    def fit_gd():
-      
-      
-    def fit_sgd()
-      
-    def predict()
-      
-    def evaluate()
-    
-    def sigmoid()
+    #def fit_gd(self,X,y):
+      #n_samples, n_features = X.shape
+      #ones = np.ones((n_samples,1))
+      #X = np.hstack((ones,X))
+      #self.coefficients = np.zeros(n_features+1)
+
+      #return 
