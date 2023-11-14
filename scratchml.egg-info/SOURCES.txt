@@ -1,7 +1,11 @@
 README.md
 setup.py
+scratchml/__init__.py
 scratchml.egg-info/PKG-INFO
 scratchml.egg-info/SOURCES.txt
 scratchml.egg-info/dependency_links.txt
 scratchml.egg-info/requires.txt
 scratchml.egg-info/top_level.txt
+scratchml/supervised_learning/__init__.py
+scratchml/supervised_learning/linear.py
+scratchml/supervised_learning/tree.py
