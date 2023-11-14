@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: scratchml
+Version: 0.1
+Summary: A custom machine learning library
+Home-page: https://github.com/isaacnicolas/scratchml
+Author: Isaac Nicolas
+Author-email: isaacnicolas97@gmail.com
+License: MIT
+Description-Content-Type: text/markdown
+
+# ScratchML
+## About
+This repository contains implementations of some of the most popular ML algorithms from scratch. The purpose is to deepen the understanding of the concepts underlying this algorithms.
+
+## Contents
+- [About](About)
+## Supported models:
+- Linear Regression
+- Logistic Regression
+- Decision Tree
+## Usage
+See the examples folder for jupyter notebooks showing the different implementations

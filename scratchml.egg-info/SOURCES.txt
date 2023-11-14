@@ -1,0 +1,7 @@
+README.md
+setup.py
+scratchml.egg-info/PKG-INFO
+scratchml.egg-info/SOURCES.txt
+scratchml.egg-info/dependency_links.txt
+scratchml.egg-info/requires.txt
+scratchml.egg-info/top_level.txt
