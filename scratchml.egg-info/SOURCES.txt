@@ -8,4 +8,5 @@ scratchml.egg-info/requires.txt
 scratchml.egg-info/top_level.txt
 scratchml/supervised_learning/__init__.py
 scratchml/supervised_learning/linear.py
+scratchml/supervised_learning/random_forest.py
 scratchml/supervised_learning/tree.py
