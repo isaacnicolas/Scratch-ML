@@ -22,3 +22,4 @@ See the **examples** folder for notebooks that use the implementations.
 - [Linear Regression](scratchml/supervised_learning/linear.py)
 - [Logistic Regression](scratchml/supervised_learning/linear.py)
 - [Decision Tree](scratchml/supervised_learning/tree.py)
+- [Random Forest](scratchml/supervised_learning/random_forest.py)
