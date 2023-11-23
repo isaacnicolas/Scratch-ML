@@ -27,8 +27,12 @@ pip install -e .
 
 ## Examples
 See the **examples** folder for notebooks that use the implementations.
+- Linear Regression [Notebook](examples/LinearRegression.ipynb)
+- Logistic Regression [Notebook](examples/LogisticRegression.ipynb)
+- Decision Tree and Random Forest [Notebook](examples/DecisionTree.ipynb)
 
 ## Supported models:
 - [Linear Regression](scratchml/supervised_learning/linear.py)
 - [Logistic Regression](scratchml/supervised_learning/linear.py)
 - [Decision Tree](scratchml/supervised_learning/tree.py)
+- [Random Forest](scratchml/supervised_learning/random_forest.py)
