@@ -4,7 +4,9 @@ class Node():
   """
   A class representing a node of a decision tree model.
   """
-  def __init__(self,gini=0,entropy=0,num_samples=0,threshold=None,num_samples_per_class=None, predicted_class=None, feature_index=None,left=None,right=None):
+  def __init__(self, gini = 0, entropy = 0, num_samples = 0, threshold = None,
+               num_samples_per_class = None, predicted_class = None,
+               feature_index = None, left = None, right = None):
     self.gini = gini
     self.entropy = entropy
     self.num_samples = num_samples
@@ -21,7 +23,8 @@ class DecisionTreeC():
   A class representing a decision tree model.
   """
 
-  def __init__(self,criterion='gini',splitter='best',max_depth=None,min_samples_split=2,min_samples_leaf=1,max_features=None):
+  def __init__(self, criterion = 'gini', splitter = 'best', max_depth = None,
+               min_samples_split = 2, min_samples_leaf = 1, max_features = None):
     self.criterion = criterion
     self.splitter = splitter
     self.max_depth = max_depth
