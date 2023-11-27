@@ -1,6 +1,9 @@
 import numpy as np
 import scipy
+
 from scratchml.supervised_learning.tree import DecisionTreeC, DecisionTreeR
+
+from scratchml.utils.base import clone_estimator
 
 class RandomForestC():
     """
@@ -99,3 +102,41 @@ class RandomForestR():
         tree_preds_mean = np.mean(tree_preds, axis=0)
         
         return tree_preds_mean
+    
+class AdaBoostC():
+    """
+    A class implementing an AdaBoost classifier.
+
+    Parameters:
+
+    """
+    def __init__(self, estimator:object = None, n_estimators:int = 50,
+                 learning_rate: float = 1.0):
+        self.estimator = estimator
+        self.n_estimators = n_estimators
+        self.learning_rate = learning_rate
+        self.estimators = None
+        self.weights = None
+        self.pred_weights = None
+
+    def fit(self, X, y):
+        # Set initial weights
+        weights = [1/len(X) for _ in range(len(X))]
+        pred_weights = []
+        # Initialize estimators 
+        self.estimators = [clone_estimator(estimator = self.estimator) for _ in range(self.n_estimators)]
+        for estimator in self.estimator:
+            X_sampled, y_sampled = _sample_data(X,y,weights)
+            estimator.fit(X_sampled,y_sampled)
+            y_pred = estimator.predict(X_sampled)
+            weights, predictor_weight = _update_weights(y_pred, y)
+            pred_weights.append(predictor_weight)
+
+    def predict(self,X):
+        pass
+
+    def _sample_data(self, X, y, weights):
+        
+        pass
+    def _update_weights(self, y_pred, y):
+        pass
