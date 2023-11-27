@@ -121,22 +121,32 @@ class AdaBoostC():
 
     def fit(self, X, y):
         # Set initial weights
-        weights = [1/len(X) for _ in range(len(X))]
+        weights = np.array([1/len(X) for _ in range(len(X))])
         pred_weights = []
         # Initialize estimators 
         self.estimators = [clone_estimator(estimator = self.estimator) for _ in range(self.n_estimators)]
         for estimator in self.estimator:
-            X_sampled, y_sampled = _sample_data(X,y,weights)
-            estimator.fit(X_sampled,y_sampled)
+            X_sampled, y_sampled = self._sample_data(X, y, weights)
+            estimator.fit(X_sampled, y_sampled)
             y_pred = estimator.predict(X_sampled)
-            weights, predictor_weight = _update_weights(y_pred, y)
+            weights, predictor_weight = self._update_weights(y_pred, y)
             pred_weights.append(predictor_weight)
 
     def predict(self,X):
         pass
 
     def _sample_data(self, X, y, weights):
+        # Normalize weights so that they sum 1
+        norm_weights = weights / np.sum(weights)
+
+        # Get sampling indices according to weights
+        sample_indices = np.random.choice(np.arange(len(X)), size = len(X), p = norm_weights)
+
+        # Sample data
+        X_sampled = X[sample_indices]
+        y_sampled = y[sample_indices]
         
-        pass
+        return X_sampled, y_sampled
+    
     def _update_weights(self, y_pred, y):
         pass
