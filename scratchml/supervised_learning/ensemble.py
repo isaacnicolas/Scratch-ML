@@ -110,7 +110,7 @@ class AdaBoostC():
     Parameters:
 
     """
-    def __init__(self, estimator:object = None, n_estimators:int = 50,
+    def __init__(self, estimator: object = None, n_estimators: int = 50,
                  learning_rate: float = 1.0):
         self.estimator = estimator
         self.n_estimators = n_estimators
@@ -120,20 +120,31 @@ class AdaBoostC():
         self.pred_weights = None
 
     def fit(self, X, y):
+        self.n_classes_ = len(np.unique(y))
         # Set initial weights
         weights = np.array([1/len(X) for _ in range(len(X))])
-        pred_weights = []
+        self.pred_weights = []
         # Initialize estimators 
         self.estimators = [clone_estimator(estimator = self.estimator) for _ in range(self.n_estimators)]
-        for estimator in self.estimator:
+        for estimator in self.estimators:
             X_sampled, y_sampled = self._sample_data(X, y, weights)
             estimator.fit(X_sampled, y_sampled)
             y_pred = estimator.predict(X_sampled)
-            weights, predictor_weight = self._update_weights(y_pred, y)
-            pred_weights.append(predictor_weight)
+            weights, predictor_weight = self._update_weights(y_pred, y, weights)
+            self.pred_weights.append(predictor_weight)
 
-    def predict(self,X):
-        pass
+    def predict(self, X):
+        # Initialize a matrix to store the predictions
+        class_predictions = np.zeros((X.shape[0], self.n_classes_))
+        # For each estimator, predict values. For each predicted sample sum weight to the corresponding class
+        for estimator, weight in zip(self.estimators,self.pred_weights):
+            predictions = estimator.predict(X)
+            for i in range (X.shape[0]):
+                class_predictions[i, predictions[i]] += weight
+        # Final predictions
+        final_predictions = np.argmax(class_predictions, axis = 1)
+
+        return final_predictions
 
     def _sample_data(self, X, y, weights):
         # Normalize weights so that they sum 1
@@ -148,5 +159,16 @@ class AdaBoostC():
         
         return X_sampled, y_sampled
     
-    def _update_weights(self, y_pred, y):
-        pass
+    def _update_weights(self, y_pred, y, weights):
+        # Calculate weighted error rate
+        indicator = (y_pred != y).astype(int)
+        weighted_error_rate = np.sum(weights * indicator) / np.sum(weights)
+        # Avoid division by zero
+        weighted_error_rate = np.clip(weighted_error_rate, 1e-10, 1 - 1e-10)
+        # Calculate predictor's weight
+        predictor_weight = self.learning_rate * np.log((1 - weighted_error_rate) / weighted_error_rate)
+        # Update weights
+        weights *= np.exp(predictor_weight * indicator)
+        weights /= np.sum(weights)
+ 
+        return weights, predictor_weight
