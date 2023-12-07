@@ -153,6 +153,9 @@ class DecisionTreeC():
   
   def _gini(self,y):
     n_samples_ = len(y)
+    # Handle the case where n_samples_ is zero
+    if n_samples_ == 0:
+        return 0
     num_samples_per_class = [np.sum(y == cls) for cls in self.classes_]
     gini = 1 - np.sum(np.array(num_samples_per_class)**2) / n_samples_**2
 

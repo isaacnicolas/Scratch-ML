@@ -7,6 +7,8 @@ scratchml.egg-info/dependency_links.txt
 scratchml.egg-info/requires.txt
 scratchml.egg-info/top_level.txt
 scratchml/supervised_learning/__init__.py
+scratchml/supervised_learning/ensemble.py
 scratchml/supervised_learning/linear.py
-scratchml/supervised_learning/random_forest.py
 scratchml/supervised_learning/tree.py
+scratchml/utils/__init__.py
+scratchml/utils/base.py

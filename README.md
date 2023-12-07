@@ -16,8 +16,8 @@ The * means that the model has implementations both for regression and classific
 - [Decision Tree*](scratchml/supervised_learning/tree.py)
 - [Random Forest*](scratchml/supervised_learning/ensemble.py)
 - [Adaboost*](scratchml/supervised_learning/ensemble.py)
-- [XGBoost (eXtreme Gradient Boosting)]()
 - [Gradient Boosting]()
+- [XGBoost (eXtreme Gradient Boosting)]()
 - [KNN (K Nearest Neighbors)]()
 ### Unsupervised Learning:
 - [DBSCAN]()

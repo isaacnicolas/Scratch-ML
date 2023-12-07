@@ -130,7 +130,7 @@ class AdaBoostC():
             X_sampled, y_sampled = self._sample_data(X, y, weights)
             estimator.fit(X_sampled, y_sampled)
             y_pred = estimator.predict(X_sampled)
-            weights, predictor_weight = self._update_weights(y_pred, y, weights)
+            weights, predictor_weight = self._update_weights(y_pred, y_sampled, weights)
             self.pred_weights.append(predictor_weight)
 
     def predict(self, X):
@@ -171,4 +171,83 @@ class AdaBoostC():
         weights *= np.exp(predictor_weight * indicator)
         weights /= np.sum(weights)
  
+        return weights, predictor_weight
+
+class AdaBoostR():
+    """
+    A class implementing an AdaBoost Regressor.
+
+    Parameters:
+        estimator (object): Estimator object to use sequentially. Should include fit and predict methods.
+        n_estimators (int): Number of estimators to train sequentially.
+        learning_rate (float): Learning rate of predictor weight.
+
+    """
+    def __init__(self, estimator: object = None, n_estimators: int = 50,
+                 learning_rate: float = 1.0):
+        self.estimator = estimator
+        self.n_estimators = n_estimators
+        self.learning_rate = learning_rate
+        self.estimators = []
+        self.weights = []
+        self.pred_weights = []
+
+    def fit(self, X, y):
+        # Set initial weights
+        weights = np.array([1/len(X) for _ in range(len(X))])
+        # Initialize estimators 
+        self.estimators = [clone_estimator(estimator = self.estimator) for _ in range(self.n_estimators)]
+        
+        for estimator in self.estimators:
+            X_sampled, y_sampled = self._sample_data(X, y, weights)
+            
+            estimator.fit(X_sampled, y_sampled)
+            y_pred = estimator.predict(X_sampled)
+            
+            weights, predictor_weight = self._update_weights(y_pred, y_sampled, weights)
+            self.pred_weights.append(predictor_weight)
+
+    def predict(self, X):
+        predictions = np.zeros(len(X))
+        for estimator, weight in zip(self.estimators, self.pred_weights):
+            predictions += estimator.predict(X) * weight
+        return predictions / np.sum(self.pred_weights)
+
+    def _sample_data(self, X, y, weights):
+        # Normalize weights so that they sum 1
+        norm_weights = weights / np.sum(weights)
+
+        # Get sampling indices according to weights
+        sample_indices = np.random.choice(np.arange(len(X)), size = len(X), p = norm_weights)
+
+        # Sample data
+        X_sampled = X[sample_indices]
+        y_sampled = y[sample_indices]
+        
+        return X_sampled, y_sampled
+    
+    def _update_weights(self, y_pred, y, weights):
+        # Calculate absolute errors
+        abs_errors = np.abs(y_pred - y)
+
+        # Rank errors from smallest to largest
+        sorted_indices = np.argsort(abs_errors)
+        ranks = np.argsort(abs_errors)
+
+        # Calculate the maximum rank
+        max_rank = len(y) - 1
+
+        # Compute loss for each instance based on its rank
+        losses = np.array([r / max_rank for r in ranks])
+
+        # Avoid division by zero and extreme weights
+        losses = np.clip(losses, 1e-10, 1 - 1e-10)
+
+        # Calculate predictor's weight
+        predictor_weight = self.learning_rate * np.log((1 - losses) / losses)
+
+        # Update weights
+        weights *= np.exp(predictor_weight)
+        weights /= np.sum(weights)
+
         return weights, predictor_weight
