@@ -209,6 +209,7 @@ class AdaBoostR():
 
     def predict(self, X):
         predictions = np.zeros(len(X))
+
         for estimator, weight in zip(self.estimators, self.pred_weights):
             predictions += estimator.predict(X) * weight
         return predictions / np.sum(self.pred_weights)
@@ -227,27 +228,29 @@ class AdaBoostR():
         return X_sampled, y_sampled
     
     def _update_weights(self, y_pred, y, weights):
+        """
+        Reference: Improving Regressors Using Boosting Techniques (1997)
+        """
         # Calculate absolute errors
         abs_errors = np.abs(y_pred - y)
 
-        # Rank errors from smallest to largest
-        sorted_indices = np.argsort(abs_errors)
-        ranks = np.argsort(abs_errors)
+        # Calculate supremum value
+        sup = np.max(abs_errors)
 
-        # Calculate the maximum rank
-        max_rank = len(y) - 1
-
-        # Compute loss for each instance based on its rank
-        losses = np.array([r / max_rank for r in ranks])
+        # Calculate the losses (exponential)
+        losses = np.array(1 - (np.exp((-abs_errors) / sup)))
 
         # Avoid division by zero and extreme weights
         losses = np.clip(losses, 1e-10, 1 - 1e-10)
 
+        # Average loss
+        loss = np.average(losses)
+
         # Calculate predictor's weight
-        predictor_weight = self.learning_rate * np.log((1 - losses) / losses)
+        predictor_weight = self.learning_rate * (loss / (1 - loss))
 
         # Update weights
-        weights *= np.exp(predictor_weight)
+        weights *= predictor_weight**(1 - losses)
         weights /= np.sum(weights)
 
         return weights, predictor_weight
