@@ -18,7 +18,7 @@ The * means that the model has implementations both for regression and classific
 - [Adaboost*](scratchml/supervised_learning/ensemble.py)
 - [Gradient Boosting]()
 - [XGBoost (eXtreme Gradient Boosting)]()
-- [KNN (K Nearest Neighbors)]()
+- [KNN (K Nearest Neighbors)*](scratchml/supervised_learning/clustering.py)
 ### Unsupervised Learning:
 - [DBSCAN]()
 - [K-Means]()
@@ -30,6 +30,10 @@ See the **examples** folder for notebooks that use the implementations.
 - Logistic Regression [Notebook](examples/LogisticRegression.ipynb)
 - Decision Tree and Random Forest [Notebook](examples/DecisionTree.ipynb)
 - AdaBoost [Notebook](examples/AdaBoost.ipynb)
+- KNN [Notebook](examples/KNN.ipynb)  
+<p align="center">
+  <img src="images/KNN.png" alt="KNN visualization"/>
+</p>
 
 ## Installation
 ```shell
